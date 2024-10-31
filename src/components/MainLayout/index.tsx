@@ -9,14 +9,14 @@ import {
   BookOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import type { MenuProps } from "antd";
+import { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { MainLayoutContext } from "../../context/MainLayoutContext";
-import { Link, Routes, Route } from "react-router-dom";
-import Dashboard from "../../view/dashboard"; // Path to your dashboard component
-import NotFound from "../../view/not-found"; // Path to your NotFound component
+import { Link, Routes, Route, useNavigate } from "react-router-dom";
+import Dashboard from "../../view/dashboard";
+import NotFound from "../../view/not-found";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -50,6 +50,7 @@ const items: MenuItem[] = [
 const MainLayout = () => {
   const { changePageName } = useContext(MainLayoutContext);
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -68,15 +69,23 @@ const MainLayout = () => {
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
-        style={{ background: "#001529" }} // Dark background color for Sider
+        style={{ background: "#001529" }}
       >
         <div className="demo-logo-vertical" />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          {" "}
-          {/* Keep theme as dark */}
           {items.map((item) => (
-            <Menu.Item key={item.key} icon={item.icon}>
-              <Link to={item.key === "1" ? "/" : "#"}> {item.label}</Link>
+            <Menu.Item
+              key={item.key}
+              icon={item.icon}
+              onClick={() => {
+                if (item.key === "logout") {
+                  navigate("/login"); // Redirect to login on logout
+                }
+              }}
+            >
+              <Link to={item.key === "1" ? "/dashboard" : "#"}>
+                {item.label}
+              </Link>
             </Menu.Item>
           ))}
         </Menu>
@@ -84,8 +93,6 @@ const MainLayout = () => {
 
       <Layout>
         <Content style={{ margin: "0 16px", background: "#ffffff" }}>
-          {" "}
-          {/* Set content background to white */}
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>ST0CK</Breadcrumb.Item>
             <Breadcrumb.Item>hello Duylinh13</Breadcrumb.Item>
@@ -94,13 +101,13 @@ const MainLayout = () => {
             style={{
               padding: 24,
               minHeight: 360,
-              background: "#ffffff", // Set inner content background to white
+              background: "#ffffff",
               borderRadius: borderRadiusLG,
             }}
           >
             <Routes>
-              <Route index element={<Dashboard />} /> {/* Default route */}
-              <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
+              <Route index element={<Dashboard />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </Content>
