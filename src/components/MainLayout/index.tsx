@@ -8,8 +8,9 @@ import {
   FileSearchOutlined,
   BookOutlined,
   LogoutOutlined,
+  NotificationOutlined,
 } from "@ant-design/icons";
-import { MenuProps } from "antd";
+import { MenuProps, Input, Badge } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { MainLayoutContext } from "../../context/MainLayoutContext";
 import { Link, Routes, Route, useNavigate } from "react-router-dom";
@@ -50,6 +51,8 @@ const items: MenuItem[] = [
 const MainLayout = () => {
   const { changePageName } = useContext(MainLayoutContext);
   const [collapsed, setCollapsed] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [notifications, setNotifications] = useState(0);
   const navigate = useNavigate();
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -62,6 +65,15 @@ const MainLayout = () => {
       console.error("changePageName is not defined");
     }
   }, [changePageName]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleNotificationClick = () => {
+    console.log("Notifications clicked");
+    setNotifications(0);
+  };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -79,7 +91,7 @@ const MainLayout = () => {
               icon={item.icon}
               onClick={() => {
                 if (item.key === "logout") {
-                  navigate("/login"); // Redirect to login on logout
+                  navigate("/login");
                 }
               }}
             >
@@ -93,9 +105,37 @@ const MainLayout = () => {
 
       <Layout>
         <Content style={{ margin: "0 16px", background: "#ffffff" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>ST0CK</Breadcrumb.Item>
-            <Breadcrumb.Item>hello Duylinh13</Breadcrumb.Item>
+          <Breadcrumb
+            style={{
+              margin: "16px 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="flex items-center space-x-4">
+              {" "}
+              {/* Align breadcrumb items horizontally */}
+              <Breadcrumb.Item>ST0CK</Breadcrumb.Item>
+              <Breadcrumb.Item>hello Duylinh13</Breadcrumb.Item>
+            </div>
+            <div className="flex items-center space-x-2">
+              {" "}
+              {/* Flex container for search and notifications */}
+              <Input
+                placeholder="Search..."
+                value={searchValue}
+                onChange={handleSearchChange}
+                style={{ width: 200 }}
+              />
+              <Badge
+                count={notifications}
+                offset={[10, 0]}
+                onClick={handleNotificationClick}
+              >
+                <NotificationOutlined className="text-lg cursor-pointer" />
+              </Badge>
+            </div>
           </Breadcrumb>
           <div
             style={{
