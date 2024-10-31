@@ -5,6 +5,9 @@ import {
   PieChartOutlined,
   TeamOutlined,
   UserOutlined,
+  FileSearchOutlined,
+  BookOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
@@ -30,13 +33,18 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Dashboard", "1", <PieChartOutlined />),
-  getItem("Portfolio", "2", <DesktopOutlined />),
-  getItem("Trading & Market", "sub1", <UserOutlined />),
-  getItem("Research Portal", "sub2", <TeamOutlined />),
-  getItem("Wallet Transfer Pay", "9", <FileOutlined />),
-  getItem("Reporting & Transaction", "sub3", <UserOutlined />),
-  getItem("Tutorial", "sub4", <TeamOutlined />),
+  getItem("Dashboard", "1", <PieChartOutlined className="text-lg" />),
+  getItem("Portfolio", "2", <DesktopOutlined className="text-lg" />),
+  getItem("Trading & Market", "sub1", <UserOutlined className="text-lg" />),
+  getItem("Research Portal", "sub2", <TeamOutlined className="text-lg" />),
+  getItem("Wallet Transfer Pay", "9", <FileOutlined className="text-lg" />),
+  getItem(
+    "Reporting & Transaction",
+    "sub3",
+    <FileSearchOutlined className="text-lg" />
+  ),
+  getItem("Tutorial", "sub4", <BookOutlined className="text-lg" />),
+  getItem("Logout", "logout", <LogoutOutlined className="text-lg" />),
 ];
 
 const MainLayout = () => {
